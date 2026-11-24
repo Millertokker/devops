@@ -135,7 +135,10 @@ function cspFor(hashes, { meta = false } = {}) {
     ...(meta ? [] : ["frame-ancestors 'none'"]),
     "base-uri 'self'",
     "object-src 'none'",
-    'upgrade-insecure-requests',
+    // En <meta>, cette directive casserait le site tant que le certificat HTTPS n'existe pas
+    // (toutes les ressources seraient forcées en HTTPS). La redirection HTTP -> HTTPS
+    // est assurée par GitHub Pages (« Enforce HTTPS »).
+    ...(meta ? [] : ['upgrade-insecure-requests']),
   ].join('; ');
 }
 
