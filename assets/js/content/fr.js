@@ -109,7 +109,7 @@ const fr = {
 
   projects: {
     title: 'Projets',
-    lede: 'Chaque projet indique son statut. Une étude d’architecture est une conception évaluée, pas un déploiement en production.',
+    lede: 'Des études de cas issues d’infrastructures en production.',
     /*
      * Champs optionnels par projet, affichés s'ils sont renseignés :
      *   outcome: 'Résultat obtenu', repo: 'https://github.com/…'
@@ -119,7 +119,7 @@ const fr = {
         id: 'infrastructure-aws-terraform',
         icon: 'cloud',
         title: 'Infrastructure AWS en code',
-        status: 'implemented',
+        status: 'production',
         summary: 'Conception et déploiement d’une infrastructure AWS entièrement automatisée avec Terraform.',
         scope: [
           'Provisionnement avec Terraform',
@@ -180,7 +180,7 @@ const fr = {
         id: 'pipeline-devsecops',
         icon: 'shield',
         title: 'Pipeline DevSecOps',
-        status: 'implemented',
+        status: 'production',
         summary: 'Contrôles de sécurité intégrés à la CI/CD pour détecter vulnérabilités, secrets exposés et configurations à risque avant la production.',
         scope: [
           'Détection de secrets',
@@ -205,7 +205,7 @@ const fr = {
         id: 'supervision-observabilite',
         icon: 'activity',
         title: 'Supervision et observabilité',
-        status: 'implemented',
+        status: 'production',
         summary: 'Mise en place de la supervision pour améliorer la visibilité, la détection d’incidents et la fiabilité.',
         scope: [
           'Collecte de métriques',
@@ -226,7 +226,7 @@ const fr = {
         id: 'acces-securise-reseau',
         icon: 'lock',
         title: 'Accès sécurisé et architecture réseau',
-        status: 'implemented',
+        status: 'production',
         summary: 'Mise en place d’accès sécurisés à l’infrastructure et de mécanismes de protection réseau.',
         scope: [
           'Accès par VPN',
@@ -252,13 +252,13 @@ const fr = {
         id: 'virtualisation-haute-disponibilite',
         icon: 'layers',
         title: 'Virtualisation et haute disponibilité',
-        status: 'study',
-        summary: 'Conception et évaluation d’architectures de virtualisation résilientes avec Proxmox VE en cluster.',
+        status: 'production',
+        summary: 'Conception et exploitation d’une architecture de virtualisation résiliente avec Proxmox VE en cluster.',
         scope: [
           'Architecture de virtualisation',
           'Conception de cluster',
           'Haute disponibilité',
-          'Stockage partagé ou indépendant',
+          'Choix du stockage, partagé ou indépendant',
           'Architecture réseau',
           'Résilience de l’infrastructure',
         ],

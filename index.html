@@ -253,9 +253,9 @@
     </section>
 
     <section id="projects" class="section" aria-labelledby="projects-title">
-      <div class="container" data-render="projects" data-hash="2788579427"><!-- render:projects --><header class="section-head">
+      <div class="container" data-render="projects" data-hash="3748469961"><!-- render:projects --><header class="section-head">
     <h2 id="projects-title">Projets</h2>
-    <p class="lede">Chaque projet indique son statut. Une étude d’architecture est une conception évaluée, pas un déploiement en production.</p>
+    <p class="lede">Des études de cas issues d’infrastructures en production.</p>
   </header>
   <script type="application/json" id="sim-ui">{"open":"Voir la simulation","badge":"Simulation","note":"Données fictives générées pour illustrer le fonctionnement, temps accéléré.","studyNote":"Étude d’architecture : scénario théorique, non déployé en production. Données fictives.","close":"Fermer"}</script>
   <div class="projects">
@@ -263,13 +263,13 @@
     <article class="project" id="projet-infrastructure-aws-terraform" aria-labelledby="projet-infrastructure-aws-terraform-title">
       <div class="project__top">
         <span class="icon-tile"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 18a4.5 4.5 0 0 1-.6-8.96A6 6 0 0 1 18 8.5a4.5 4.5 0 0 1-.5 9.5H7z"/></svg></span>
-        <span class="status status--implemented">Réalisé</span>
+        <span class="status status--production">En production</span>
       </div>
       <h3 id="projet-infrastructure-aws-terraform-title">Infrastructure AWS en code</h3>
       <p class="project__summary">Conception et déploiement d’une infrastructure AWS entièrement automatisée avec Terraform.</p>
       
       <ul class="project__stack" role="list" aria-label="Technologies"><li>Terraform</li><li>AWS</li><li>EKS</li><li>ALB</li><li>RDS</li><li>S3</li><li>IAM</li><li>Route 53</li><li>CloudFront</li><li>GitHub Actions</li></ul>
-      <button class="sim-open" type="button" data-sim-open="infrastructure-aws-terraform" aria-haspopup="dialog"><svg class="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M8 5.5v13l10.5-6.5z"/></svg>Voir la simulation</button><script type="application/json" id="sim-data-infrastructure-aws-terraform">{"title":"Infrastructure AWS en code","status":"implemented","kind":"terraform","domain":"app.example.com","resources":[{"addr":"aws_vpc.main","node":"vpc"},{"addr":"aws_subnet.private[\"a\"]","node":"vpc"},{"addr":"aws_subnet.private[\"b\"]","node":"vpc"},{"addr":"aws_iam_role.eks_cluster","node":"iam"},{"addr":"aws_iam_role.eks_nodes","node":"iam"},{"addr":"aws_eks_cluster.main","node":"eks","slow":true},{"addr":"aws_eks_node_group.default","node":"eks","slow":true},{"addr":"aws_db_instance.postgres","node":"rds","slow":true},{"addr":"aws_s3_bucket.assets","node":"s3"},{"addr":"aws_lb.app","node":"alb"},{"addr":"aws_cloudfront_distribution.cdn","node":"cloudfront"},{"addr":"aws_route53_record.app","node":"route53"}]}</script>
+      <button class="sim-open" type="button" data-sim-open="infrastructure-aws-terraform" aria-haspopup="dialog"><svg class="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M8 5.5v13l10.5-6.5z"/></svg>Voir la simulation</button><script type="application/json" id="sim-data-infrastructure-aws-terraform">{"title":"Infrastructure AWS en code","status":"production","kind":"terraform","domain":"app.example.com","resources":[{"addr":"aws_vpc.main","node":"vpc"},{"addr":"aws_subnet.private[\"a\"]","node":"vpc"},{"addr":"aws_subnet.private[\"b\"]","node":"vpc"},{"addr":"aws_iam_role.eks_cluster","node":"iam"},{"addr":"aws_iam_role.eks_nodes","node":"iam"},{"addr":"aws_eks_cluster.main","node":"eks","slow":true},{"addr":"aws_eks_node_group.default","node":"eks","slow":true},{"addr":"aws_db_instance.postgres","node":"rds","slow":true},{"addr":"aws_s3_bucket.assets","node":"s3"},{"addr":"aws_lb.app","node":"alb"},{"addr":"aws_cloudfront_distribution.cdn","node":"cloudfront"},{"addr":"aws_route53_record.app","node":"route53"}]}</script>
       <details class="project__details">
         <summary>Périmètre</summary>
         <ul class="checklist" role="list"><li>Provisionnement avec Terraform</li><li>Configuration des ressources AWS</li><li>Déploiement de l’infrastructure Kubernetes</li><li>Intégration CI/CD</li><li>Déploiement applicatif automatisé</li><li>Infrastructure reproductible</li></ul>
@@ -295,13 +295,13 @@
     <article class="project" id="projet-pipeline-devsecops" aria-labelledby="projet-pipeline-devsecops-title">
       <div class="project__top">
         <span class="icon-tile"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3 4 6v6c0 4.5 3.4 8.3 8 9 4.6-.7 8-4.5 8-9V6l-8-3z"/><path d="m9 12 2 2 4-4"/></svg></span>
-        <span class="status status--implemented">Réalisé</span>
+        <span class="status status--production">En production</span>
       </div>
       <h3 id="projet-pipeline-devsecops-title">Pipeline DevSecOps</h3>
       <p class="project__summary">Contrôles de sécurité intégrés à la CI/CD pour détecter vulnérabilités, secrets exposés et configurations à risque avant la production.</p>
       
       <ul class="project__stack" role="list" aria-label="Technologies"><li>GitLab CI</li><li>GitHub Actions</li><li>Gitleaks</li><li>Scanners de vulnérabilités</li><li>Vault</li><li>AWS IAM</li></ul>
-      <button class="sim-open" type="button" data-sim-open="pipeline-devsecops" aria-haspopup="dialog"><svg class="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M8 5.5v13l10.5-6.5z"/></svg>Voir la simulation</button><script type="application/json" id="sim-data-pipeline-devsecops">{"title":"Pipeline DevSecOps","status":"implemented","kind":"pipeline","stages":[{"name":"build","jobs":["build-image"]},{"name":"test","jobs":["unit-tests"]},{"name":"security","jobs":["gitleaks","dependency-scan","container-scan"]},{"name":"deploy","jobs":["deploy-production"]}]}</script>
+      <button class="sim-open" type="button" data-sim-open="pipeline-devsecops" aria-haspopup="dialog"><svg class="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M8 5.5v13l10.5-6.5z"/></svg>Voir la simulation</button><script type="application/json" id="sim-data-pipeline-devsecops">{"title":"Pipeline DevSecOps","status":"production","kind":"pipeline","stages":[{"name":"build","jobs":["build-image"]},{"name":"test","jobs":["unit-tests"]},{"name":"security","jobs":["gitleaks","dependency-scan","container-scan"]},{"name":"deploy","jobs":["deploy-production"]}]}</script>
       <details class="project__details">
         <summary>Périmètre</summary>
         <ul class="checklist" role="list"><li>Détection de secrets</li><li>Analyse de sécurité dans la CI/CD</li><li>Gestion des vulnérabilités</li><li>Déploiements sécurisés</li><li>Gestion des secrets</li><li>Contrôles intégrés aux pipelines</li></ul>
@@ -311,13 +311,13 @@
     <article class="project" id="projet-supervision-observabilite" aria-labelledby="projet-supervision-observabilite-title">
       <div class="project__top">
         <span class="icon-tile"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg></span>
-        <span class="status status--implemented">Réalisé</span>
+        <span class="status status--production">En production</span>
       </div>
       <h3 id="projet-supervision-observabilite-title">Supervision et observabilité</h3>
       <p class="project__summary">Mise en place de la supervision pour améliorer la visibilité, la détection d’incidents et la fiabilité.</p>
       
       <ul class="project__stack" role="list" aria-label="Technologies"><li>Prometheus</li><li>Grafana</li><li>ELK</li><li>Uptime Kuma</li><li>Beszel</li><li>Wazuh</li></ul>
-      <button class="sim-open" type="button" data-sim-open="supervision-observabilite" aria-haspopup="dialog"><svg class="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M8 5.5v13l10.5-6.5z"/></svg>Voir la simulation</button><script type="application/json" id="sim-data-supervision-observabilite">{"title":"Supervision et observabilité","status":"implemented","kind":"monitoring","servers":["srv-app-01","srv-app-02","srv-db-01"],"services":["web","api","worker","postgres"]}</script>
+      <button class="sim-open" type="button" data-sim-open="supervision-observabilite" aria-haspopup="dialog"><svg class="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M8 5.5v13l10.5-6.5z"/></svg>Voir la simulation</button><script type="application/json" id="sim-data-supervision-observabilite">{"title":"Supervision et observabilité","status":"production","kind":"monitoring","servers":["srv-app-01","srv-app-02","srv-db-01"],"services":["web","api","worker","postgres"]}</script>
       <details class="project__details">
         <summary>Périmètre</summary>
         <ul class="checklist" role="list"><li>Collecte de métriques</li><li>Tableaux de bord</li><li>Surveillance de disponibilité</li><li>Centralisation des logs</li><li>Alertes</li><li>Suivi de l’utilisation des ressources</li></ul>
@@ -327,13 +327,13 @@
     <article class="project" id="projet-acces-securise-reseau" aria-labelledby="projet-acces-securise-reseau-title">
       <div class="project__top">
         <span class="icon-tile"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span>
-        <span class="status status--implemented">Réalisé</span>
+        <span class="status status--production">En production</span>
       </div>
       <h3 id="projet-acces-securise-reseau-title">Accès sécurisé et architecture réseau</h3>
       <p class="project__summary">Mise en place d’accès sécurisés à l’infrastructure et de mécanismes de protection réseau.</p>
       
       <ul class="project__stack" role="list" aria-label="Technologies"><li>WireGuard</li><li>Cloudflare</li><li>WAF</li><li>Teleport</li><li>RBAC</li><li>Linux</li><li>TLS</li></ul>
-      <button class="sim-open" type="button" data-sim-open="acces-securise-reseau" aria-haspopup="dialog"><svg class="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M8 5.5v13l10.5-6.5z"/></svg>Voir la simulation</button><script type="application/json" id="sim-data-acces-securise-reseau">{"title":"Accès sécurisé et architecture réseau","status":"implemented","kind":"access","proxy":"teleport.example.com","nodes":[{"name":"prod-api","env":"prod"},{"name":"prod-db","env":"prod"},{"name":"staging-api","env":"staging"}]}</script>
+      <button class="sim-open" type="button" data-sim-open="acces-securise-reseau" aria-haspopup="dialog"><svg class="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M8 5.5v13l10.5-6.5z"/></svg>Voir la simulation</button><script type="application/json" id="sim-data-acces-securise-reseau">{"title":"Accès sécurisé et architecture réseau","status":"production","kind":"access","proxy":"teleport.example.com","nodes":[{"name":"prod-api","env":"prod"},{"name":"prod-db","env":"prod"},{"name":"staging-api","env":"staging"}]}</script>
       <details class="project__details">
         <summary>Périmètre</summary>
         <ul class="checklist" role="list"><li>Accès par VPN</li><li>Administration SSH sécurisée</li><li>Segmentation réseau</li><li>Contrôle d’accès</li><li>Audit des sessions</li><li>Configuration WAF</li><li>Durcissement TLS</li></ul>
@@ -343,16 +343,16 @@
     <article class="project" id="projet-virtualisation-haute-disponibilite" aria-labelledby="projet-virtualisation-haute-disponibilite-title">
       <div class="project__top">
         <span class="icon-tile"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m12 3 9 5-9 5-9-5 9-5z"/><path d="m3 13 9 5 9-5"/></svg></span>
-        <span class="status status--study">Étude d’architecture</span>
+        <span class="status status--production">En production</span>
       </div>
       <h3 id="projet-virtualisation-haute-disponibilite-title">Virtualisation et haute disponibilité</h3>
-      <p class="project__summary">Conception et évaluation d’architectures de virtualisation résilientes avec Proxmox VE en cluster.</p>
+      <p class="project__summary">Conception et exploitation d’une architecture de virtualisation résiliente avec Proxmox VE en cluster.</p>
       
       <ul class="project__stack" role="list" aria-label="Technologies"><li>Proxmox VE</li><li>Linux</li><li>QDevice</li><li>Réseau</li><li>PostgreSQL</li><li>Scaleway</li></ul>
-      <button class="sim-open" type="button" data-sim-open="virtualisation-haute-disponibilite" aria-haspopup="dialog"><svg class="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M8 5.5v13l10.5-6.5z"/></svg>Voir la simulation</button><script type="application/json" id="sim-data-virtualisation-haute-disponibilite">{"title":"Virtualisation et haute disponibilité","status":"study","kind":"cluster","vms":[{"id":101,"name":"web","node":"pve1"},{"id":102,"name":"api","node":"pve1"},{"id":103,"name":"db","node":"pve2"}]}</script>
+      <button class="sim-open" type="button" data-sim-open="virtualisation-haute-disponibilite" aria-haspopup="dialog"><svg class="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M8 5.5v13l10.5-6.5z"/></svg>Voir la simulation</button><script type="application/json" id="sim-data-virtualisation-haute-disponibilite">{"title":"Virtualisation et haute disponibilité","status":"production","kind":"cluster","vms":[{"id":101,"name":"web","node":"pve1"},{"id":102,"name":"api","node":"pve1"},{"id":103,"name":"db","node":"pve2"}]}</script>
       <details class="project__details">
         <summary>Périmètre</summary>
-        <ul class="checklist" role="list"><li>Architecture de virtualisation</li><li>Conception de cluster</li><li>Haute disponibilité</li><li>Stockage partagé ou indépendant</li><li>Architecture réseau</li><li>Résilience de l’infrastructure</li></ul>
+        <ul class="checklist" role="list"><li>Architecture de virtualisation</li><li>Conception de cluster</li><li>Haute disponibilité</li><li>Choix du stockage, partagé ou indépendant</li><li>Architecture réseau</li><li>Résilience de l’infrastructure</li></ul>
       </details>
       
     </article>

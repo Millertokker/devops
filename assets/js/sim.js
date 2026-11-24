@@ -1540,14 +1540,14 @@
 
   var cluster = {
     guide: {
-      intro: 'Étude théorique : un cluster Proxmox de 2 nœuds avec un QDevice. Vous allez simuler la panne d’un nœud dans trois configurations.',
+      intro: 'Un cluster Proxmox de production : 2 nœuds et un QDevice. Vous allez simuler la panne d’un nœud, puis comparer avec deux autres configurations (sans QDevice, réplication ZFS).',
       end: 'Vous avez vu pourquoi le QDevice est indispensable à 2 nœuds, et ce que change le choix du stockage.',
       steps: [
         { act: 'fail', set: { qdevice: 'on', storage: 'shared' }, ctx: 'Avec QDevice · stockage partagé', btn: 'Faire tomber pve1', title: 'Panne d’un nœud', text: 'Grâce au QDevice, le quorum est conservé : pve1 est isolé, puis ses VM redémarrent sur pve2.', spot: '.pves' },
         { act: 'restore', ctx: 'Avec QDevice · stockage partagé', btn: 'Réparer et rétablir pve1', title: 'Retour de pve1', text: 'pve1 est réparé et revient dans le cluster. Les VM regagnent leur nœud d’origine par migration à chaud, sans coupure.', spot: '.pves' },
-        { act: 'fail', set: { qdevice: 'off', storage: 'shared' }, ctx: 'Sans QDevice · stockage partagé', btn: 'Faire tomber pve1', title: 'La même panne, sans QDevice', text: 'Avec seulement 2 votes, pve2 seul n’a pas la majorité : le cluster se bloque par sécurité.', spot: '.quorum' },
+        { act: 'fail', set: { qdevice: 'off', storage: 'shared' }, ctx: 'Sans QDevice · stockage partagé', btn: 'Faire tomber pve1', title: 'Comparaison : sans QDevice', text: 'Pour comparer : avec seulement 2 votes, pve2 seul n’a pas la majorité : le cluster se bloque par sécurité.', spot: '.quorum' },
         { act: 'restore', ctx: 'Sans QDevice · stockage partagé', btn: 'Rétablir pve1', title: 'Retour de pve1', text: 'Le quorum est rétabli.', spot: '.quorum' },
-        { act: 'fail', set: { qdevice: 'on', storage: 'zfs' }, ctx: 'Avec QDevice · réplication ZFS', btn: 'Faire tomber pve1', title: 'Avec réplication ZFS', text: 'Les VM redémarrent, mais depuis la dernière copie répliquée : les écritures les plus récentes sont perdues.', spot: '.pves' },
+        { act: 'fail', set: { qdevice: 'on', storage: 'zfs' }, ctx: 'Avec QDevice · réplication ZFS', btn: 'Faire tomber pve1', title: 'Comparaison : réplication ZFS', text: 'Pour comparer, avec un stockage local répliqué : les VM redémarrent, mais depuis la dernière copie répliquée : les écritures les plus récentes sont perdues.', spot: '.pves' },
       ],
     },
     html: function (p) {
