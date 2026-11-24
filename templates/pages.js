@@ -56,11 +56,11 @@ function projectCard(item, ui, level) {
       </article>`;
 }
 
-function contactActions(c, { withPageLink = false } = {}) {
+function contactActions(c, { withPageLink = false, emailStyle = 'light' } = {}) {
   const { email, github, linkedin, cv } = c.site.contact;
   const L = c.ui.contactLabels;
   const out = [];
-  if (email) out.push(`<a class="btn btn--light" href="mailto:${safeUrl(email)}">${icon('mail', 'icon icon--sm')}${esc(email)}</a>`);
+  if (email) out.push(`<a class="btn btn--${emailStyle}" href="mailto:${safeUrl(email)}">${emailStyle === 'light' ? icon('mail', 'icon icon--sm') : ''}${esc(email)}</a>`);
   if (linkedin) out.push(`<a class="btn btn--ghost" href="${safeUrl(linkedin)}" rel="me noopener">${icon('linkedin', 'icon icon--sm')}${esc(L.linkedin)}</a>`);
   if (github) out.push(`<a class="btn btn--ghost" href="${safeUrl(github)}" rel="me noopener">${icon('github', 'icon icon--sm')}${esc(L.github)}</a>`);
   if (cv) out.push(`<a class="btn btn--ghost" href="${safeUrl(cv)}" download>${icon('download', 'icon icon--sm')}${esc(L.cvAction)}</a>`);
@@ -115,7 +115,10 @@ function ctaBand(c) {
             <span class="icon-tile icon-tile--dark">${icon('mail')}</span>
             <h2 id="cta-title">${esc(c.contact.title)}</h2>
             <p>${esc(c.contact.text)}</p>
-            <div class="actions">${contactActions(c)}</div>
+            <div class="actions">
+              ${c.site.contact.formEndpoint ? `<a class="btn btn--light" href="/contact/#formulaire">${icon('mail', 'icon icon--sm')}${esc(c.ui.writeMessage)}</a>` : ''}
+              ${contactActions(c, { emailStyle: c.site.contact.formEndpoint ? 'ghost' : 'light' })}
+            </div>
           </div>
         </div>
       </div>
@@ -517,16 +520,29 @@ function contact(c) {
   const page = { key: 'contact', path: '/contact/', nav: 'contact', ...m };
   page.crumbs = [{ label: c.ui.home, href: '/' }, { label: m.heading }];
 
+  const base = c.site.url.replace(/\/+$/, '');
+  // Sans JavaScript : envoi classique (URL sans « /ajax »), puis retour sur la page contact.
+  const classicAction = formEndpoint ? formEndpoint.replace('/ajax/', '/') : '';
   const form = formEndpoint ? `
-          <form class="panel contact-form contact-form--light" action="${safeUrl(formEndpoint)}" method="post" novalidate data-contact-form>
-            <h2 class="panel__title">${esc(f.title)}</h2>
-            <div class="field"><label for="cf-name">${esc(f.name)}</label><input id="cf-name" name="name" type="text" autocomplete="name" required maxlength="120"></div>
-            <div class="field"><label for="cf-email">${esc(f.email)}</label><input id="cf-email" name="email" type="email" autocomplete="email" required maxlength="200"></div>
-            <div class="field"><label for="cf-message">${esc(f.message)}</label><textarea id="cf-message" name="message" rows="5" required maxlength="5000"></textarea></div>
-            <div class="hp" aria-hidden="true"><label for="cf-company">Société</label><input id="cf-company" name="_gotcha" type="text" tabindex="-1" autocomplete="off"></div>
+          <form class="panel contact-form contact-form--light" id="formulaire" action="${safeUrl(classicAction)}" method="post"
+            data-endpoint="${safeUrl(formEndpoint)}" novalidate data-contact-form aria-labelledby="form-title">
+            <h2 class="panel__title" id="form-title">${esc(f.title)}</h2>
+            <p class="contact-form__lede">${esc(f.lede)}</p>
+            <div class="field-row">
+              <div class="field"><label for="cf-name">${esc(f.name)} <span aria-hidden="true">*</span></label><input id="cf-name" name="name" type="text" autocomplete="name" required maxlength="120"></div>
+              <div class="field"><label for="cf-email">${esc(f.email)} <span aria-hidden="true">*</span></label><input id="cf-email" name="email" type="email" autocomplete="email" required maxlength="200" spellcheck="false"></div>
+            </div>
+            <div class="field"><label for="cf-subject">${esc(f.subject)} <span class="field__hint">${esc(f.subjectHint)}</span></label><input id="cf-subject" name="objet" type="text" maxlength="160"></div>
+            <div class="field"><label for="cf-message">${esc(f.message)} <span aria-hidden="true">*</span></label><textarea id="cf-message" name="message" rows="6" required minlength="10" maxlength="5000"></textarea></div>
+            <input type="hidden" name="_subject" value="${esc(f.mailSubject)}">
+            <input type="hidden" name="_template" value="table">
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_next" value="${esc(base)}/contact/">
+            <div class="hp" aria-hidden="true"><label for="cf-honey">Ne pas remplir</label><input id="cf-honey" name="_honey" type="text" tabindex="-1" autocomplete="off"></div>
             <button class="btn btn--primary" type="submit" data-label="${esc(f.submit)}" data-sending="${esc(f.sending)}"
               data-success="${esc(f.success)}" data-error="${esc(f.error)}" data-invalid="${esc(f.invalid)}">${esc(f.submit)}</button>
             <p class="form-status" role="status" aria-live="polite"></p>
+            <p class="contact-form__privacy">${esc(f.privacy)}</p>
           </form>` : '';
 
   page.body = `${pageHead(c, { crumbs: page.crumbs, heading: m.heading, lede: m.lede })}

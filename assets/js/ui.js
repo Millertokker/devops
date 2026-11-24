@@ -97,9 +97,16 @@
     button.textContent = msg.sending;
     status.textContent = '';
 
-    fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } })
+    // Envoi en arrière-plan. Le service peut répondre 200 avec un échec dans le JSON
+    // (ex. formulaire pas encore activé) : on lit la réponse avant d'annoncer un succès.
+    fetch(form.dataset.endpoint || form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } })
       .then(function (res) {
-        if (!res.ok) throw new Error(String(res.status));
+        return res.json().catch(function () { return {}; }).then(function (data) {
+          var failed = !res.ok || data.success === false || data.success === 'false' || data.ok === false || data.errors;
+          if (failed) throw new Error(data.message || String(res.status));
+        });
+      })
+      .then(function () {
         form.reset();
         status.textContent = msg.success;
         status.classList.add('is-success');

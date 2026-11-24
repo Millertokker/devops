@@ -76,7 +76,9 @@ Une valeur à `null` n'est **pas affichée** : aucun lien vide.
   affichés sur sa page s'ils sont renseignés.
 - **Expérience** : ajouter les postes confirmés dans `experience.entries` (modèle en commentaire).
 - **CV** : déposer le PDF dans `assets/files/` puis renseigner `contact.cv`.
-- **Formulaire** : renseigner `contact.formEndpoint` (Formspree par exemple). La CSP est adaptée par le build.
+- **Formulaire de contact** : géré par FormSubmit (`contact.formEndpoint` dans `content/site.js`).
+  Le premier message déclenche un email d'activation à valider. Après activation, l'adresse peut être
+  remplacée dans l'URL par l'identifiant aléatoire fourni par FormSubmit. La CSP est adaptée par le build.
 
 ### Simulations de projets
 

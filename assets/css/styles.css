@@ -1269,6 +1269,18 @@ html.has-dialog { overflow: hidden; }
   .sim-host .is-spot { scroll-margin-top: calc(var(--header-h) + 18rem); }
 }
 
+/* Formulaire de contact */
+.contact-form { scroll-margin-top: calc(var(--header-h) + 1rem); }
+.contact-form__lede { margin-top: -0.75rem; color: var(--text-2); font-size: 0.9375rem; }
+.field-row { display: grid; gap: 1rem; }
+@media (min-width: 560px) { .field-row { grid-template-columns: 1fr 1fr; } }
+.field label span[aria-hidden] { color: var(--text-2); }
+.field__hint { font-weight: 400; color: var(--text-2); font-size: 0.8125rem; }
+.contact-form--light .btn { justify-self: start; }
+.contact-form__privacy { font-size: 0.8125rem; color: var(--text-2); }
+.contact-form--light .form-status.is-success { color: var(--text); font-weight: 600; }
+.contact-form--light .form-status.is-error { color: var(--danger); font-weight: 600; }
+
 /* Page contact */
 .contact-page { display: grid; gap: 1.25rem; align-items: start; }
 @media (min-width: 900px) { .contact-page--form { grid-template-columns: 1fr 1fr; } }

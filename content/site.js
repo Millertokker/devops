@@ -35,10 +35,14 @@ const site = {
     linkedin: null,       // ex. 'https://www.linkedin.com/in/<profil>'
     cv: null,             // ex. 'assets/files/cv-niaina-andriharisoa.pdf'
     /**
-     * URL d'un service de formulaire acceptant un POST FormData et répondant en JSON
-     * (ex. Formspree : 'https://formspree.io/f/<id>'). Si null, pas de formulaire.
+     * Formulaire de contact, via FormSubmit (formsubmit.co) : les messages arrivent par email.
+     * - Le premier message envoyé déclenche un email d'activation : cliquer sur le lien pour activer.
+     * - Après activation, FormSubmit fournit un identifiant aléatoire qui peut remplacer l'adresse
+     *   dans cette URL (https://formsubmit.co/ajax/<identifiant>).
+     * Envoi en arrière-plan sur l'URL « /ajax/ » ; sans JavaScript, envoi classique sur l'URL sans « /ajax ».
+     * Si null, pas de formulaire.
      */
-    formEndpoint: null,
+    formEndpoint: 'https://formsubmit.co/ajax/andriharisoaniaina@gmail.com',
   },
 };
 
