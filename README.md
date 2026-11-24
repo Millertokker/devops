@@ -1,49 +1,80 @@
 # Portfolio de NIAINA Andriharisoa
 
-Site statique en HTML, CSS et JavaScript (modules ES), sans framework ni dépendance.
-Node.js sert uniquement à l'étape de build optionnelle (pré-rendu et fichiers SEO), elle aussi sans dépendance.
+Site statique **multipage** en HTML, CSS et JavaScript, sans framework ni dépendance.
+Un petit générateur maison (`scripts/build.mjs`, Node.js, aucune dépendance) produit toutes les pages dans `dist/`.
+
+## Pages
+
+| URL | Contenu |
+|---|---|
+| `/` | Accueil : hero, accès rapide, 3 projets phares, domaines d'expertise |
+| `/a-propos/` | Présentation, points forts, responsabilités, approche |
+| `/competences/` | Les 7 domaines et leurs outils |
+| `/projets/` | Les 6 études de cas |
+| `/projets/<id>/` | Une page par projet : périmètre, stack, simulation intégrée, projet précédent et suivant |
+| `/contact/` | Email (copie en un clic), puis LinkedIn, GitHub, CV ou formulaire s'ils sont configurés |
+| `/404.html` | Page introuvable (non indexée) |
+
+Chaque page a son titre, sa description, son URL canonique, son Open Graph, ses données structurées
+(Person, WebSite, page typée, BreadcrumbList, TechArticle pour les projets) et sa CSP.
 
 ## Structure
 
 ```
-index.html                  Page : <head>, en-tête, hero (statique) et conteneurs de sections
-404.html                    Page d'erreur (noindex)
+content/
+  site.js                   Configuration : domaine, email, GitHub, LinkedIn, CV, formulaire
+  fr.js                     Tout le texte : hero, pages (titre, description), projets, compétences…
+templates/
+  lib.js                    Échappement, icônes, utilitaires
+  layout.js                 <head> (SEO, CSP), en-tête, pied de page : communs à toutes les pages
+  pages.js                  Une fonction par page (accueil, à propos, compétences, projets, projet, contact, 404)
 assets/
   css/styles.css            Design system et composants
-  css/font-inline.css       Police embarquée pour l'ouverture en file:// (générée par le build)
   fonts/inter-latin.woff2   Police Inter (licence OFL), hébergée localement
-  js/
-    content/site.js         Configuration : domaine, liens, email, CV, formulaire
-    content/fr.js           Tous les textes (à propos, compétences, projets, expérience)
-    render.js               Fonctions pures : données vers HTML (navigateur et build)
-    ui.js                   Interactions : menu mobile, lien actif, formulaire (fonctionne aussi en file://)
-    main.js                 Rafraîchit le contenu si fr.js a changé sans rebuild (http uniquement)
+  js/ui.js                  Interactions communes : menu mobile, en-tête, copie de l'email, formulaire
+  js/sim.js                 Moteur des simulations, chargé uniquement sur les pages projet
   img/                      Image de partage, icônes
 scripts/
-  build.mjs                 Pré-rendu, SEO, sitemap, robots, _headers
+  build.mjs                 Génère dist/ : pages, sitemap, robots, _headers, CNAME
+  dev.mjs                   Serveur de développement avec reconstruction automatique
   og-image.html             Source de l'image de partage (1200×630)
+dist/                       Site généré (non versionné), publié par le workflow
 ```
+
+## Développement
+
+```bash
+npm run dev        # http://localhost:8080, reconstruit à chaque modification
+npm run build      # génère dist/
+```
+
+Node.js 20 ou plus. Le site se consulte via ce serveur (les liens entre pages ne fonctionnent pas en ouvrant un fichier par double-clic).
 
 ## Modifier le contenu
 
 | Quoi | Où |
 |---|---|
-| Domaine, email, GitHub, LinkedIn, CV, formulaire | `assets/js/content/site.js` |
-| Sections, projets, compétences, expérience, titre et description SEO | `assets/js/content/fr.js` |
-| Texte du hero et navigation | `index.html` |
+| Domaine, email, GitHub, LinkedIn, CV, formulaire | `content/site.js` |
+| Textes, projets, compétences, expérience, titres et descriptions des pages | `content/fr.js` |
+| Menu, en-tête, pied de page | `templates/layout.js` |
+| Structure d'une page | `templates/pages.js` |
 
 Une valeur à `null` n'est **pas affichée** : aucun lien vide.
 
-- **Statut d'un projet** : `production`, `implemented` ou `study`. Une étude n'est jamais marquée `production`.
-- **Champs optionnels d'un projet** : `outcome` (résultat) et `repo` (lien vers le code).
+- **Ajouter un projet** : ajouter un objet dans `projects.items` (`fr.js`). Sa page `/projets/<id>/`, sa carte,
+  le plan du site et la navigation précédent / suivant sont générés automatiquement.
+- **Projets phares de l'accueil** : `featured: true` sur le projet.
+- **Statut d'un projet** : `production`, `implemented` ou `study`.
+- **Champs optionnels d'un projet** : `context` (contexte), `outcome` (résultats) et `repo` (lien vers le code),
+  affichés sur sa page s'ils sont renseignés.
 - **Expérience** : ajouter les postes confirmés dans `experience.entries` (modèle en commentaire).
 - **CV** : déposer le PDF dans `assets/files/` puis renseigner `contact.cv`.
 - **Formulaire** : renseigner `contact.formEndpoint` (Formspree par exemple). La CSP est adaptée par le build.
 
 ### Simulations de projets
 
-Chaque projet a un bouton « Voir la simulation » qui reproduit l'outil réel du projet.
-Le moteur est dans `assets/js/sim.js`, chargé seulement au premier clic. Le type est choisi par `kind` dans `fr.js` :
+Chaque page projet intègre une simulation qui reproduit l'outil réel du projet.
+Le moteur est dans `assets/js/sim.js`, chargé uniquement sur les pages projet. Le type est choisi par `kind` dans `fr.js` :
 
 | `kind` | Ce qui est simulé | Données dans `fr.js` |
 |---|---|---|
@@ -60,26 +91,13 @@ mise en évidence. Le visiteur choisit « Regarder la démo » (tout s'enchaîne
 Pour modifier le déroulé, éditez la liste `steps` du guide : `act` (action), `btn` (texte du bouton),
 `title`, `text`, `spot` (zone à mettre en évidence) et `set` (scénario à sélectionner avant l'action).
 
-Les valeurs affichées (CPU, identifiants, durées) sont générées aléatoirement et la fenêtre l'indique.
+Les valeurs affichées (CPU, identifiants, durées) sont générées aléatoirement, et la page l'indique.
 Les domaines utilisent `example.com` : n'y mettez jamais de vrai nom d'hôte, d'IP ou d'identifiant.
-
-Après chaque modification :
-
-```bash
-npm run build
-```
-
-## Développement local
-
-```bash
-npm run serve      # http://localhost:8080
-```
-
-Ouvrir `index.html` par double-clic fonctionne aussi, mais les modifications de `fr.js` n'apparaissent qu'après `npm run build`.
 
 ## Déploiement sur GitHub Pages (andriharisoa.xyz)
 
-Le workflow `.github/workflows/pages.yml` construit et publie le site à chaque push sur `main`.
+Le workflow `.github/workflows/pages.yml` lance le build, vérifie les pages générées et publie `dist/`
+à chaque push sur `main`.
 GitHub Pages ne permet pas d'en-têtes HTTP : la politique de sécurité (CSP) est donc injectée
 dans la page par le build, en balise `<meta>`. Le fichier `_headers` ne sert que sur Netlify ou Cloudflare Pages.
 
@@ -135,7 +153,8 @@ error_page 404 /404.html;
 Régénérer l'image de partage après modification du hero :
 
 ```bash
-npm run serve   # dans un autre terminal
+# servir la racine du dépôt (le fichier source n'est pas copié dans dist/)
+python3 -m http.server 8090
 google-chrome --headless=new --hide-scrollbars --window-size=1200,630 \
-  --screenshot=assets/img/og-image.png http://localhost:8080/scripts/og-image.html
+  --screenshot=assets/img/og-image.png http://localhost:8090/scripts/og-image.html
 ```

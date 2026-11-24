@@ -10,7 +10,8 @@
  *   cluster     cluster Proxmox VE, quorum, QDevice et bascule HA (étude théorique)
  *
  * Toutes les valeurs sont fictives et générées localement. Aucune requête réseau.
- * Interface : window.PortfolioSim.mount(dialog, payload, strings) -> { destroy() }
+ * Chargé uniquement sur les pages projet : chaque élément [data-sim-inline="<id du bloc JSON>"]
+ * reçoit sa simulation au chargement de la page.
  */
 (function () {
   'use strict';
@@ -1838,7 +1839,7 @@
 
   var KINDS = { terraform: terraform, containers: containers, pipeline: pipeline, monitoring: monitoring, access: access, cluster: cluster };
 
-  function mount(dialog, payload, strings) {
+  function mount(host, payload, strings) {
     var kind = KINDS[payload.kind];
     if (!kind) return { destroy: function () {} };
     var ctx;
@@ -1853,26 +1854,24 @@
 
     function build() {
       var parts = kind.html(payload);
-      dialog.innerHTML =
+      host.innerHTML =
         '<div class="sim sim--' + esc(payload.kind) + '">' +
-          '<header class="sim__head"><div>' +
-            '<span class="sim__badge">' + svg('play', 'icon icon--xs icon--fill') + esc(strings.badge) + '</span>' +
-            '<h2 id="sim-title">' + esc(payload.title) + '</h2>' +
-            '<p class="sim__note">' + esc(payload.status === 'study' ? strings.studyNote : strings.note) + '</p>' +
-          '</div><button class="sim__close" type="button" data-sim-close aria-label="' + esc(strings.close) + '">' + svg('close') + '</button></header>' +
           '<section class="guide" data-guide aria-label="Guide de la simulation"><div data-guide-body></div>' +
             '<p class="sim__status" role="status" data-status></p></section>' +
           '<div class="sim__toolbar" hidden>' + parts.toolbar + '</div>' +
           '<div class="sim__body">' + parts.body + '</div>' +
         '</div>';
-      root = dialog.querySelector('.sim');
+      root = host.querySelector('.sim');
       ctx = new Context(root);
       current = kind.init(ctx, payload) || {};
       ctx.status('');
       root.addEventListener('click', onClick);
-      new Guide(ctx, kind.guide, current, function () { ctx.stop(); build(); });
-      var first = root.querySelector('[data-g="auto"]');
-      if (first) first.focus();
+      new Guide(ctx, kind.guide, current, function () {
+        ctx.stop();
+        build();
+        var start = host.querySelector('[data-g="auto"]');
+        if (start) start.focus({ preventScroll: true });
+      });
     }
 
     build();
@@ -1883,4 +1882,14 @@
   }
 
   window.PortfolioSim = { mount: mount };
+
+  /* Montage automatique dans la page projet */
+  var stringsEl = document.getElementById('sim-ui');
+  if (stringsEl) {
+    var strings = JSON.parse(stringsEl.textContent);
+    Array.prototype.forEach.call(document.querySelectorAll('[data-sim-inline]'), function (host) {
+      var data = document.getElementById(host.dataset.simInline);
+      if (data) mount(host, JSON.parse(data.textContent), strings);
+    });
+  }
 })();

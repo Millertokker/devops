@@ -1,6 +1,6 @@
 /**
- * Contenu en français : source unique de toutes les sections sous le hero.
- * (Le texte du hero est dans index.html pour s'afficher sans attendre le JavaScript.)
+ * Contenu en français : source unique de tout le texte du site.
+ * Utilisé par le build (scripts/build.mjs) pour générer toutes les pages dans dist/.
  *
  * Règles :
  *  - Uniquement des faits vrais et vérifiables.
@@ -26,7 +26,78 @@ const fr = {
     ],
   },
 
+  hero: {
+    role: 'Ingénieur DevOps & Cloud · SRE · DevSecOps',
+    title: 'Concevoir, automatiser et sécuriser des infrastructures fiables.',
+    sub: 'Je suis NIAINA Andriharisoa. J’automatise, je sécurise et je supervise des infrastructures cloud, de la conception à la production.',
+    primary: { href: '/projets/', label: 'Voir mes projets' },
+    secondary: { href: '/contact/', label: 'Me contacter' },
+    stack: ['AWS', 'Linux', 'Docker', 'Kubernetes', 'Terraform', 'Ansible', 'CI/CD', 'Observabilité'],
+  },
+
+  /** Titre (balise <title>), description (moteurs de recherche) et en-tête de chaque page. */
+  pages: {
+    home: {
+      title: 'NIAINA Andriharisoa | Ingénieur DevOps & Cloud, SRE, DevSecOps',
+      description: 'Ingénieur DevOps & Cloud (SRE, DevSecOps) : automatisation et sécurisation d’infrastructures fiables avec AWS, Terraform, Kubernetes, CI/CD et observabilité.',
+    },
+    about: {
+      title: 'À propos | NIAINA Andriharisoa, Ingénieur DevOps & Cloud',
+      description: 'Parcours, responsabilités et approche de NIAINA Andriharisoa, ingénieur DevOps & Cloud : production, automatisation, sécurité et fiabilité.',
+      heading: 'À propos',
+      lede: 'Ingénieur DevOps et Cloud, de l’architecture à l’exploitation en production.',
+    },
+    skills: {
+      title: 'Compétences DevOps, Cloud et DevSecOps | NIAINA Andriharisoa',
+      description: 'AWS, Terraform, Ansible, Docker, Kubernetes, CI/CD, GitOps, observabilité, sécurité et systèmes Linux : les compétences de NIAINA Andriharisoa par domaine.',
+      heading: 'Compétences',
+      lede: 'Les outils que j’utilise, regroupés par domaine.',
+    },
+    projects: {
+      title: 'Projets DevOps et Cloud en production | NIAINA Andriharisoa',
+      description: 'Six études de cas en production avec simulations interactives : AWS et Terraform, conteneurs, pipeline DevSecOps, supervision, accès sécurisé, Proxmox HA.',
+      heading: 'Projets',
+      lede: 'Des études de cas issues d’infrastructures en production, chacune avec sa simulation interactive.',
+    },
+    contact: {
+      title: 'Contact | NIAINA Andriharisoa, Ingénieur DevOps & Cloud',
+      description: 'Un projet d’infrastructure, de pipeline CI/CD, de sécurité ou de fiabilité ? Contactez NIAINA Andriharisoa, ingénieur DevOps & Cloud.',
+      heading: 'Contact',
+      lede: 'Cloud, pipelines de déploiement, sécurité ou fiabilité : je serais ravi d’échanger sur votre projet.',
+    },
+    notFound: {
+      title: 'Page introuvable | NIAINA Andriharisoa',
+      description: 'Cette page n’existe pas.',
+      heading: 'Cette page n’existe pas.',
+      lede: 'Le lien est peut-être ancien ou mal saisi.',
+    },
+  },
+
+  home: {
+    featuredTitle: 'Projets phares',
+    featuredLede: 'Trois études de cas en production. Chacune se rejoue dans une simulation interactive.',
+    featuredLink: 'Voir les 6 projets',
+    domainsTitle: 'Domaines d’expertise',
+    domainsLink: 'Toutes les compétences',
+  },
+
   ui: {
+    caseStudy: 'Voir l’étude de cas',
+    prevProject: 'Projet précédent',
+    nextProject: 'Projet suivant',
+    allProjects: 'Tous les projets',
+    scopeTitle: 'Périmètre',
+    contextTitle: 'Contexte',
+    outcomeTitle: 'Résultats',
+    stackTitle: 'Stack technique',
+    statusTitle: 'Statut',
+    simTitle: 'Simulation interactive',
+    simLede: 'Rejouez le fonctionnement de ce projet, étape par étape. Données fictives, temps accéléré.',
+    simNoscript: 'La simulation nécessite JavaScript.',
+    copyEmail: 'Copier l’adresse',
+    copied: 'Adresse copiée',
+    contactPageLink: 'Page contact',
+    home: 'Accueil',
     statusLabels: {
       production: 'En production',
       implemented: 'Réalisé',
@@ -69,10 +140,10 @@ const fr = {
   quicklinks: {
     title: 'Accès rapide',
     items: [
-      { href: '#expertise', icon: 'grid', label: 'Compétences', meta: '{domains} domaines techniques' },
-      { href: '#projects', icon: 'folder', label: 'Projets', meta: '{projects} études de cas' },
-      { href: '#experience', icon: 'briefcase', label: 'Expérience', meta: 'Responsabilités et approche' },
-      { href: '#contact', icon: 'mail', label: 'Contact', meta: 'Parlons de votre projet' },
+      { href: '/projets/', icon: 'folder', label: 'Projets', meta: '{projects} études de cas en production' },
+      { href: '/competences/', icon: 'grid', label: 'Compétences', meta: '{domains} domaines techniques' },
+      { href: '/a-propos/', icon: 'briefcase', label: 'À propos', meta: 'Parcours, responsabilités et approche' },
+      { href: '/contact/', icon: 'mail', label: 'Contact', meta: 'Parlons de votre projet' },
     ],
   },
 
@@ -117,6 +188,7 @@ const fr = {
     items: [
       {
         id: 'infrastructure-aws-terraform',
+        featured: true,
         icon: 'cloud',
         title: 'Infrastructure AWS en code',
         status: 'production',
@@ -151,6 +223,7 @@ const fr = {
       },
       {
         id: 'production-conteneurs',
+        featured: true,
         icon: 'container',
         title: 'Infrastructure de production et conteneurs',
         status: 'production',
@@ -178,6 +251,7 @@ const fr = {
       },
       {
         id: 'pipeline-devsecops',
+        featured: true,
         icon: 'shield',
         title: 'Pipeline DevSecOps',
         status: 'production',

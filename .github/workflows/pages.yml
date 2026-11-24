@@ -1,4 +1,4 @@
-# Déploie le portfolio sur GitHub Pages à chaque push sur main.
+# Construit le site multipage (dist/) et le publie sur GitHub Pages à chaque push sur main.
 # Domaine : andriharisoa.xyz (fichier CNAME généré par le build, domaine déclaré dans les réglages Pages).
 name: pages
 
@@ -26,27 +26,25 @@ jobs:
         with:
           node-version: 22
 
-      - name: Build (pré-rendu, SEO, CSP, sitemap, CNAME)
+      - name: Build (pages, SEO, CSP, sitemap, CNAME)
         run: node scripts/build.mjs
 
-      - name: Assembler les fichiers publiés
+      - name: Vérifier le site généré
         run: |
-          mkdir -p _site
-          cp -r index.html 404.html CNAME .nojekyll robots.txt sitemap.xml \
-                site.webmanifest favicon.svg favicon.ico assets _site/
-
-      - name: Vérifier le site assemblé
-        run: |
-          test -f _site/index.html
-          test "$(cat _site/CNAME)" = "andriharisoa.xyz"
-          grep -q 'rel="canonical" href="https://andriharisoa.xyz/"' _site/index.html
-          grep -q 'http-equiv="Content-Security-Policy"' _site/index.html
+          for page in index.html a-propos/index.html competences/index.html projets/index.html contact/index.html 404.html; do
+            test -f "dist/$page" || { echo "Page manquante : $page"; exit 1; }
+          done
+          test "$(ls -d dist/projets/*/ | wc -l)" -ge 6
+          test "$(cat dist/CNAME)" = "andriharisoa.xyz"
+          grep -q 'rel="canonical" href="https://andriharisoa.xyz/"' dist/index.html
+          grep -q 'http-equiv="Content-Security-Policy"' dist/index.html
+          grep -q '<loc>https://andriharisoa.xyz/projets/' dist/sitemap.xml
 
       - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: _site
+          path: dist
 
   deploy:
     needs: build

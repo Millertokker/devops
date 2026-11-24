@@ -2,12 +2,12 @@
   "name": "portfolio-niaina",
   "private": true,
   "type": "module",
-  "description": "Portfolio \u2014 NIAINA Andriharisoa, DevOps & Cloud Engineer. Plain HTML/CSS/JS, no runtime dependencies.",
+  "description": "Portfolio de NIAINA Andriharisoa, Ingénieur DevOps & Cloud. Site statique multipage en HTML, CSS et JS, sans dépendance.",
   "scripts": {
     "build": "node scripts/build.mjs",
-    "serve": "python3 -m http.server 8080"
+    "dev": "node scripts/dev.mjs"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   }
 }
