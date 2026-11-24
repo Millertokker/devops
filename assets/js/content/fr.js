@@ -79,7 +79,7 @@ const fr = {
   about: {
     title: 'À propos',
     paragraphs: [
-      'Ingénieur DevOps et Cloud autodidacte, je conçois, automatise et maintiens des infrastructures de production depuis plusieurs années.',
+      'Ingénieur DevOps et Cloud, je conçois, automatise et maintiens des infrastructures de production depuis plusieurs années.',
       'J’interviens sur tout le cycle de vie : architecture, provisionnement, déploiement, sécurité, supervision et maintenance. Mon approche est pragmatique : comprendre le besoin, concevoir simple, automatiser, puis améliorer en continu.',
     ],
     strengthsTitle: 'Points forts',
