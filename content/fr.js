@@ -23,6 +23,7 @@ const fr = {
       'DevOps', 'Site Reliability Engineering', 'DevSecOps', 'Cloud Infrastructure',
       'Amazon Web Services', 'Terraform', 'Ansible', 'Kubernetes', 'Docker',
       'CI/CD', 'GitOps', 'Observability', 'Linux', 'Infrastructure as Code',
+      'Keycloak', 'OpenBao', 'NetBird', 'CrowdSec', 'BunkerWeb', 'Vault', 'Teleport',
     ],
   },
 
@@ -201,7 +202,7 @@ const fr = {
         icon: 'pipeline',
         title: 'CI/CD & GitOps',
         summary: 'Chaînes de livraison automatisées, du commit jusqu’à la production.',
-        items: ['GitLab CI/CD', 'GitHub Actions', 'Jenkins', 'GitLab Runner', 'GitOps', 'Blue/Green'],
+        items: ['GitLab CI/CD', 'GitHub Actions', 'Jenkins', 'GitLab Runner', 'GitOps', 'Blue/Green', 'SSH éphémère en CI/CD (OpenBao, JWT GitLab)'],
       },
       {
         id: 'supervision-observabilite',
@@ -215,7 +216,27 @@ const fr = {
         icon: 'shield',
         title: 'DevSecOps & Sécurité',
         summary: 'Sécurité intégrée aux pipelines, aux accès et aux serveurs.',
-        items: ['Cloudflare WAF', 'Gitleaks', 'Vault', 'AWS Secrets Manager', 'Teleport', 'WireGuard', 'Scan de vulnérabilités', 'Durcissement Linux et TLS', 'IAM et RBAC'],
+        /* Avec `groups`, les outils sont présentés par sous-groupe ; `items` n'est alors pas nécessaire. */
+        groups: [
+          { label: 'Identité et accès', items: ['Keycloak', 'Teleport', 'IAM et RBAC'] },
+          { label: 'Accès réseau', items: ['WireGuard', 'NetBird'] },
+          { label: 'Gestion des secrets', items: ['Vault', 'OpenBao', 'AWS Secrets Manager'] },
+          { label: 'Protection et détection', items: ['Cloudflare WAF', 'BunkerWeb', 'CrowdSec'] },
+          { label: 'Analyse et durcissement', items: ['Gitleaks', 'Scan de vulnérabilités', 'Durcissement Linux et TLS'] },
+        ],
+        /* Encadré « Mise en pratique » affiché sur la page du domaine. */
+        practice: {
+          title: 'Mise en pratique : SSH éphémère en CI/CD',
+          intro: 'Les jobs GitLab CI n’ont aucune clé SSH stockée.',
+          steps: [
+            'Le job reçoit un jeton d’identité JWT émis par GitLab.',
+            'Il s’authentifie auprès d’OpenBao (méthode jwt) sur un rôle limité au projet et aux branches protégées.',
+            'Le moteur SSH d’OpenBao signe un certificat à courte durée de vie.',
+            'Le serveur, qui fait confiance à l’autorité de certification d’OpenBao, accepte la connexion. Le certificat expire de lui-même.',
+          ],
+          result: 'Aucun secret permanent dans la CI, des accès limités dans le temps et traçables.',
+          tools: ['GitLab CI', 'JWT', 'OpenBao', 'SSH'],
+        },
       },
       {
         id: 'reseau-systemes',

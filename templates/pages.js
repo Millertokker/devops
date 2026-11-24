@@ -7,6 +7,21 @@ import { breadcrumbs } from './layout.js';
 
 /* ------------------------------------------------------------ Composants */
 
+/** Outils d'un domaine, à plat (le domaine peut être organisé en sous-groupes). */
+const domainItems = (d) => (d.groups ? d.groups.flatMap((g) => g.items) : d.items);
+
+/** Outils d'un domaine : par sous-groupe s'il en a, sinon une seule liste. */
+function domainTags(d, { large = false, headingLevel = null } = {}) {
+  const cls = `tags${large ? ' tags--lg' : ''}`;
+  const list = (items) => `<ul class="${cls}" role="list">${join(items, (t) => `<li>${esc(t)}</li>`)}</ul>`;
+  if (!d.groups) return list(d.items);
+  return `<div class="tag-groups">${join(d.groups, (g) => `
+          <div class="tag-group">
+            ${headingLevel ? `<h${headingLevel} class="tag-group__label">${esc(g.label)}</h${headingLevel}>` : `<p class="tag-group__label">${esc(g.label)}</p>`}
+            ${list(g.items)}
+          </div>`)}</div>`;
+}
+
 const checklist = (items) => `<ul class="checklist" role="list">${join(items, (s) => `<li>${esc(s)}</li>`)}</ul>`;
 
 const statusBadge = (status, ui) =>
@@ -228,7 +243,7 @@ function home(c) {
           ${join(c.expertise.domains, (d) => `
           <li class="domain-card">
             <span class="icon-tile">${icon(d.icon)}</span>
-            <div><h3><a class="domain-card__link" href="${domainUrl(d)}">${esc(d.title)}</a></h3><p>${esc(d.items.slice(0, 4).join(' · '))}</p></div>
+            <div><h3><a class="domain-card__link" href="${domainUrl(d)}">${esc(d.title)}</a></h3><p>${esc(domainItems(d).slice(0, 4).join(' · '))}</p></div>
             ${icon('arrow', 'icon domain-card__arrow')}
           </li>`)}
         </ul>
@@ -308,7 +323,7 @@ function skills(c) {
                 <p class="skills__summary">${esc(d.summary)}</p>
               </div>
             </div>
-            <ul class="tags" role="list">${join(d.items, (t) => `<li>${esc(t)}</li>`)}</ul>
+            ${domainTags(d)}
             ${icon('arrow', 'icon skills__arrow')}
           </li>`)}
         </ul>
@@ -334,7 +349,7 @@ function domain(c, d, index) {
     path: domainUrl(d),
     nav: 'skills',
     title: `${d.title} | Compétences de NIAINA Andriharisoa`,
-    description: describeWith(d.summary, d.items, 'Outils'),
+    description: describeWith(d.summary, domainItems(d), 'Outils'),
   };
   page.crumbs = [{ label: ui.home, href: '/' }, { label: c.pages.skills.heading, href: '/competences/' }, { label: d.title }];
 
@@ -351,9 +366,24 @@ function domain(c, d, index) {
     <section class="section section--tight" aria-labelledby="tools-title">
       <div class="container">
         <h2 id="tools-title" class="block-title">${esc(ui.toolsTitle)}</h2>
-        <ul class="tags tags--lg" role="list">${join(d.items, (t) => `<li>${esc(t)}</li>`)}</ul>
+        ${domainTags(d, { large: true, headingLevel: 3 })}
       </div>
     </section>
+
+    ${d.practice ? `
+    <section class="section section--tight" aria-labelledby="practice-title">
+      <div class="container">
+        <div class="practice">
+          <h2 id="practice-title" class="block-title">${esc(d.practice.title)}</h2>
+          <p class="practice__intro">${esc(d.practice.intro)}</p>
+          <ol class="practice__steps" role="list">${join(d.practice.steps, (st, i) => `
+            <li><span class="practice__num" aria-hidden="true">${i + 1}</span><span>${esc(st)}</span></li>`)}
+          </ol>
+          <p class="practice__result">${esc(d.practice.result)}</p>
+          ${d.practice.tools ? `<ul class="project__stack practice__tools" role="list" aria-label="Outils">${join(d.practice.tools, (t) => `<li>${esc(t)}</li>`)}</ul>` : ''}
+        </div>
+      </div>
+    </section>` : ''}
 
     ${related.length ? `
     <section class="section section--surface" aria-labelledby="related-title">

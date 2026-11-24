@@ -69,6 +69,8 @@ Une valeur à `null` n'est **pas affichée** : aucun lien vide.
   Le projet apparaît alors sur la page de chacun de ces domaines, et ses domaines sur sa page.
 - **Ajouter un domaine** : ajouter un objet dans `expertise.domains` avec `id`, `icon`, `title`, `summary` et `items`.
   Sa page `/competences/<id>/` est générée automatiquement.
+- **Sous-groupes d'outils** : remplacer `items` par `groups: [{ label, items }]` (voir DevSecOps & Sécurité).
+- **Encadré « Mise en pratique »** d'un domaine : champ `practice` (`title`, `intro`, `steps`, `result`, `tools`).
 - **Statut d'un projet** : `production`, `implemented` ou `study`.
 - **Champs optionnels d'un projet** : `context` (contexte), `outcome` (résultats) et `repo` (lien vers le code),
   affichés sur sa page s'ils sont renseignés.
