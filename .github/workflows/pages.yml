@@ -1,0 +1,59 @@
+# Déploie le portfolio sur GitHub Pages à chaque push sur main.
+# Domaine : andriharisoa.xyz (fichier CNAME généré par le build, domaine déclaré dans les réglages Pages).
+name: pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Build (pré-rendu, SEO, CSP, sitemap, CNAME)
+        run: node scripts/build.mjs
+
+      - name: Assembler les fichiers publiés
+        run: |
+          mkdir -p _site
+          cp -r index.html 404.html CNAME .nojekyll robots.txt sitemap.xml \
+                site.webmanifest favicon.svg favicon.ico assets _site/
+
+      - name: Vérifier le site assemblé
+        run: |
+          test -f _site/index.html
+          test "$(cat _site/CNAME)" = "andriharisoa.xyz"
+          grep -q 'rel="canonical" href="https://andriharisoa.xyz/"' _site/index.html
+          grep -q 'http-equiv="Content-Security-Policy"' _site/index.html
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

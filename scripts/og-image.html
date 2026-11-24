@@ -1,0 +1,34 @@
+<!doctype html>
+<!--
+  Source de assets/img/og-image.png (1200×630). Pour régénérer (site servi par `npm run serve`) :
+  google-chrome --headless=new --hide-scrollbars --window-size=1200,630 \
+    --screenshot=assets/img/og-image.png http://localhost:8080/scripts/og-image.html
+-->
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face { font-family: "Inter"; src: url("../assets/fonts/inter-latin.woff2") format("woff2"); font-weight: 400 700; }
+  * { margin: 0; box-sizing: border-box; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; }
+  body {
+    font-family: "Inter", system-ui, sans-serif;
+    background: #fff; color: #111111;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 0 96px;
+  }
+  .top { display: flex; align-items: center; gap: 16px; }
+  .mark { width: 52px; height: 52px; border-radius: 14px; background: #111111; color: #fff; display: grid; place-items: center; font-weight: 700; font-size: 26px; }
+  .name { font-size: 28px; font-weight: 600; }
+  .role { display: inline-block; margin-top: 40px; padding: 8px 18px; border-radius: 999px; background: #efefef; color: #111111; font-size: 22px; font-weight: 600; align-self: flex-start; }
+  h1 { margin-top: 24px; font-size: 68px; line-height: 1.06; letter-spacing: -0.035em; font-weight: 700; max-width: 1000px; }
+  .stack { margin-top: 36px; font-size: 22px; color: #5f5f5f; font-weight: 500; }
+</style>
+</head>
+<body>
+  <div class="top"><span class="mark">N</span><span class="name">NIAINA Andriharisoa</span></div>
+  <span class="role">Ingénieur DevOps &amp; Cloud · SRE · DevSecOps</span>
+  <h1>Concevoir, automatiser et sécuriser des infrastructures fiables.</h1>
+  <p class="stack">AWS · Terraform · Kubernetes · CI/CD · Observabilité</p>
+</body>
+</html>

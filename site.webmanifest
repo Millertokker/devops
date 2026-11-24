@@ -1,0 +1,13 @@
+{
+  "name": "NIAINA Andriharisoa, Ingénieur DevOps & Cloud",
+  "short_name": "NIAINA",
+  "start_url": "./",
+  "display": "browser",
+  "background_color": "#FFFFFF",
+  "theme_color": "#FFFFFF",
+  "icons": [
+    { "src": "favicon.svg", "type": "image/svg+xml", "sizes": "any" },
+    { "src": "assets/img/icon-192.png", "type": "image/png", "sizes": "192x192" },
+    { "src": "assets/img/icon-512.png", "type": "image/png", "sizes": "512x512" }
+  ]
+}
