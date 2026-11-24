@@ -2,7 +2,7 @@
  * Définition de chaque page du site : chemin, métadonnées SEO, données structurées et contenu.
  * buildPages(content) renvoie la liste des pages que le build écrit dans dist/.
  */
-import { esc, join, safeUrl, icon, jsonBlock, projectUrl } from './lib.js';
+import { esc, join, safeUrl, icon, jsonBlock, projectUrl, domainUrl } from './lib.js';
 import { breadcrumbs } from './layout.js';
 
 /* ------------------------------------------------------------ Composants */
@@ -51,6 +51,32 @@ function contactActions(c, { withPageLink = false } = {}) {
   if (cv) out.push(`<a class="btn btn--ghost" href="${safeUrl(cv)}" download>${icon('download', 'icon icon--sm')}${esc(L.cvAction)}</a>`);
   if (withPageLink) out.push(`<a class="btn btn--ghost" href="/contact/">${esc(c.ui.contactPageLink)}</a>`);
   return out.join('');
+}
+
+/** Navigation précédent / suivant (projets, domaines). */
+function pager({ label, prev, next, prevLabel, nextLabel, allHref, allLabel, url }) {
+  return `
+    <nav class="section section--tight" aria-label="${esc(label)}">
+      <div class="container pager">
+        <a class="pager__link" href="${url(prev)}" rel="prev">
+          ${icon('arrowLeft', 'icon')}<span><small>${esc(prevLabel)}</small><strong>${esc(prev.title)}</strong></span>
+        </a>
+        <a class="pager__all" href="${allHref}">${esc(allLabel)}</a>
+        <a class="pager__link pager__link--next" href="${url(next)}" rel="next">
+          <span><small>${esc(nextLabel)}</small><strong>${esc(next.title)}</strong></span>${icon('arrow', 'icon')}
+        </a>
+      </div>
+    </nav>`;
+}
+
+/** Description pour les moteurs de recherche : phrase + éléments principaux, 160 caractères au plus. */
+function describeWith(sentence, list, label) {
+  let text = sentence;
+  for (let n = Math.min(6, list.length); n >= 2; n--) {
+    const candidate = `${sentence} ${label}\u00a0: ${list.slice(0, n).join(', ')}.`;
+    if (candidate.length <= 160) { text = candidate; break; }
+  }
+  return text.length > 160 ? `${text.slice(0, 157).replace(/\s+\S*$/, '')}…` : text;
 }
 
 /** LinkedIn, GitHub et CV sur fond clair (page contact). */
@@ -202,7 +228,8 @@ function home(c) {
           ${join(c.expertise.domains, (d) => `
           <li class="domain-card">
             <span class="icon-tile">${icon(d.icon)}</span>
-            <div><h3>${esc(d.title)}</h3><p>${esc(d.items.slice(0, 4).join(' · '))}</p></div>
+            <div><h3><a class="domain-card__link" href="${domainUrl(d)}">${esc(d.title)}</a></h3><p>${esc(d.items.slice(0, 4).join(' · '))}</p></div>
+            ${icon('arrow', 'icon domain-card__arrow')}
           </li>`)}
         </ul>
       </div>
@@ -273,12 +300,16 @@ function skills(c) {
       <div class="container">
         <ul class="skills" role="list">
           ${join(c.expertise.domains, (d) => `
-          <li class="skills__row">
+          <li class="skills__row skills__row--link">
             <div class="skills__name">
               <span class="icon-tile">${icon(d.icon)}</span>
-              <h2>${esc(d.title)}</h2>
+              <div>
+                <h2><a class="skills__link" href="${domainUrl(d)}">${esc(d.title)}</a></h2>
+                <p class="skills__summary">${esc(d.summary)}</p>
+              </div>
             </div>
             <ul class="tags" role="list">${join(d.items, (t) => `<li>${esc(t)}</li>`)}</ul>
+            ${icon('arrow', 'icon skills__arrow')}
           </li>`)}
         </ul>
       </div>
@@ -286,6 +317,61 @@ function skills(c) {
 ${ctaBand(c)}`;
 
   page.jsonld = graph(c, page, [webPage(c, 'WebPage', page)]);
+  return page;
+}
+
+const domainsOf = (c, item) => c.expertise.domains.filter((d) => (item.domains || []).includes(d.id));
+
+function domain(c, d, index) {
+  const ui = c.ui;
+  const all = c.expertise.domains;
+  const prev = all[(index - 1 + all.length) % all.length];
+  const next = all[(index + 1) % all.length];
+  const related = c.projects.items.filter((p) => (p.domains || []).includes(d.id));
+  const base = c.site.url.replace(/\/+$/, '');
+  const page = {
+    key: `domain:${d.id}`,
+    path: domainUrl(d),
+    nav: 'skills',
+    title: `${d.title} | Compétences de NIAINA Andriharisoa`,
+    description: describeWith(d.summary, d.items, 'Outils'),
+  };
+  page.crumbs = [{ label: ui.home, href: '/' }, { label: c.pages.skills.heading, href: '/competences/' }, { label: d.title }];
+
+  page.body = `
+    <header class="page-head">
+      <div class="container">
+        ${breadcrumbs(page.crumbs)}
+        <span class="icon-tile icon-tile--lg page-head__icon">${icon(d.icon)}</span>
+        <h1 id="page-title">${esc(d.title)}</h1>
+        <p class="lede">${esc(d.summary)}</p>
+      </div>
+    </header>
+
+    <section class="section section--tight" aria-labelledby="tools-title">
+      <div class="container">
+        <h2 id="tools-title" class="block-title">${esc(ui.toolsTitle)}</h2>
+        <ul class="tags tags--lg" role="list">${join(d.items, (t) => `<li>${esc(t)}</li>`)}</ul>
+      </div>
+    </section>
+
+    ${related.length ? `
+    <section class="section section--surface" aria-labelledby="related-title">
+      <div class="container">
+        <header class="section-head">
+          <h2 id="related-title">${esc(ui.domainProjectsTitle)}</h2>
+        </header>
+        <div class="projects">${join(related, (p) => projectCard(p, ui, 3))}
+        </div>
+      </div>
+    </section>` : ''}
+${pager({ label: 'Autres domaines', prev, next, prevLabel: ui.prevDomain, nextLabel: ui.nextDomain, allHref: '/competences/', allLabel: ui.allDomains, url: domainUrl })}
+${ctaBand(c)}`;
+
+  page.jsonld = graph(c, page, [webPage(c, 'WebPage', page, {
+    about: { '@type': 'Thing', name: d.title },
+    ...(related.length && { hasPart: related.map((p) => ({ '@id': `${base}${projectUrl(p)}#article` })) }),
+  })]);
   return page;
 }
 
@@ -310,16 +396,6 @@ ${ctaBand(c)}`;
   return page;
 }
 
-/** Description pour les moteurs de recherche : résumé + technologies principales, 160 caractères au plus. */
-function describe(item) {
-  let text = item.summary;
-  for (let n = Math.min(5, item.stack.length); n >= 2; n--) {
-    const candidate = `${item.summary} Stack : ${item.stack.slice(0, n).join(', ')}.`;
-    if (candidate.length <= 160) { text = candidate; break; }
-  }
-  return text.length > 160 ? `${text.slice(0, 157).replace(/\s+\S*$/, '')}…` : text;
-}
-
 function project(c, item, index) {
   const ui = c.ui;
   const items = c.projects.items;
@@ -332,7 +408,7 @@ function project(c, item, index) {
     nav: 'projects',
     ogType: 'article',
     title: `${item.title} | Projet DevOps de NIAINA Andriharisoa`,
-    description: describe(item),
+    description: describeWith(item.summary, item.stack, 'Stack'),
     scripts: item.simulation ? ['/assets/js/sim.js'] : [],
   };
   page.crumbs = [{ label: ui.home, href: '/' }, { label: c.pages.projects.heading, href: '/projets/' }, { label: item.title }];
@@ -364,6 +440,9 @@ function project(c, item, index) {
         <aside class="panel case__aside" aria-label="${esc(ui.stackTitle)}">
           <h2 class="panel__title">${esc(ui.stackTitle)}</h2>
           <ul class="tags" role="list">${join(item.stack, (t) => `<li>${esc(t)}</li>`)}</ul>
+          ${domainsOf(c, item).length ? `
+          <h2 class="panel__title panel__title--spaced">${esc(ui.projectDomainsTitle)}</h2>
+          <ul class="domain-links" role="list">${join(domainsOf(c, item), (d) => `<li><a href="${domainUrl(d)}">${icon(d.icon, 'icon icon--sm')}${esc(d.title)}</a></li>`)}</ul>` : ''}
           <h2 class="panel__title panel__title--spaced">${esc(ui.statusTitle)}</h2>
           ${statusBadge(item.status, ui)}
           ${item.repo ? `<p><a class="link" href="${safeUrl(item.repo)}" rel="noopener">${esc(ui.repoLabel)} ${icon('external', 'icon icon--sm')}</a></p>` : ''}
@@ -384,17 +463,7 @@ function project(c, item, index) {
       </div>
     </section>` : ''}
 
-    <nav class="section section--tight" aria-label="Autres projets">
-      <div class="container pager">
-        <a class="pager__link" href="${projectUrl(prev)}" rel="prev">
-          ${icon('arrowLeft', 'icon')}<span><small>${esc(ui.prevProject)}</small><strong>${esc(prev.title)}</strong></span>
-        </a>
-        <a class="pager__all" href="/projets/">${esc(ui.allProjects)}</a>
-        <a class="pager__link pager__link--next" href="${projectUrl(next)}" rel="next">
-          <span><small>${esc(ui.nextProject)}</small><strong>${esc(next.title)}</strong></span>${icon('arrow', 'icon')}
-        </a>
-      </div>
-    </nav>
+${pager({ label: 'Autres projets', prev, next, prevLabel: ui.prevProject, nextLabel: ui.nextProject, allHref: '/projets/', allLabel: ui.allProjects, url: projectUrl })}
 ${ctaBand(c)}`;
 
   page.jsonld = graph(c, page, [{
@@ -472,6 +541,7 @@ export function buildPages(c) {
     home(c),
     about(c),
     skills(c),
+    ...c.expertise.domains.map((d, i) => domain(c, d, i)),
     projects(c),
     ...c.projects.items.map((item, i) => project(c, item, i)),
     contact(c),

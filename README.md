@@ -10,8 +10,9 @@ Un petit générateur maison (`scripts/build.mjs`, Node.js, aucune dépendance) 
 | `/` | Accueil : hero, accès rapide, 3 projets phares, domaines d'expertise |
 | `/a-propos/` | Présentation, points forts, responsabilités, approche |
 | `/competences/` | Les 7 domaines et leurs outils |
+| `/competences/<id>/` | Une page par domaine : description, outils et pratiques, projets en production qui l'utilisent |
 | `/projets/` | Les 6 études de cas |
-| `/projets/<id>/` | Une page par projet : périmètre, stack, simulation intégrée, projet précédent et suivant |
+| `/projets/<id>/` | Une page par projet : périmètre, stack, domaines, simulation intégrée, projet précédent et suivant |
 | `/contact/` | Email (copie en un clic), puis LinkedIn, GitHub, CV ou formulaire s'ils sont configurés |
 | `/404.html` | Page introuvable (non indexée) |
 
@@ -64,6 +65,10 @@ Une valeur à `null` n'est **pas affichée** : aucun lien vide.
 - **Ajouter un projet** : ajouter un objet dans `projects.items` (`fr.js`). Sa page `/projets/<id>/`, sa carte,
   le plan du site et la navigation précédent / suivant sont générés automatiquement.
 - **Projets phares de l'accueil** : `featured: true` sur le projet.
+- **Domaines d'un projet** : liste `domains` du projet (identifiants des domaines de `expertise.domains`).
+  Le projet apparaît alors sur la page de chacun de ces domaines, et ses domaines sur sa page.
+- **Ajouter un domaine** : ajouter un objet dans `expertise.domains` avec `id`, `icon`, `title`, `summary` et `items`.
+  Sa page `/competences/<id>/` est générée automatiquement.
 - **Statut d'un projet** : `production`, `implemented` ou `study`.
 - **Champs optionnels d'un projet** : `context` (contexte), `outcome` (résultats) et `repo` (lien vers le code),
   affichés sur sa page s'ils sont renseignés.

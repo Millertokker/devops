@@ -51,7 +51,7 @@ const fr = {
       title: 'Compétences DevOps, Cloud et DevSecOps | NIAINA Andriharisoa',
       description: 'AWS, Terraform, Ansible, Docker, Kubernetes, CI/CD, GitOps, observabilité, sécurité et systèmes Linux : les compétences de NIAINA Andriharisoa par domaine.',
       heading: 'Compétences',
-      lede: 'Les outils que j’utilise, regroupés par domaine.',
+      lede: 'Les outils que j’utilise, regroupés par domaine. Chaque domaine renvoie aux projets en production qui l’utilisent.',
     },
     projects: {
       title: 'Projets DevOps et Cloud en production | NIAINA Andriharisoa',
@@ -83,6 +83,13 @@ const fr = {
 
   ui: {
     caseStudy: 'Voir l’étude de cas',
+    domainLink: 'Voir le domaine',
+    toolsTitle: 'Outils et pratiques',
+    domainProjectsTitle: 'Projets en production dans ce domaine',
+    projectDomainsTitle: 'Domaines',
+    prevDomain: 'Domaine précédent',
+    nextDomain: 'Domaine suivant',
+    allDomains: 'Toutes les compétences',
     prevProject: 'Projet précédent',
     nextProject: 'Projet suivant',
     allProjects: 'Tous les projets',
@@ -168,13 +175,55 @@ const fr = {
     title: 'Compétences',
     lede: 'Les outils que j’utilise, regroupés par domaine.',
     domains: [
-      { icon: 'cloud', title: 'Cloud & Infrastructure', items: ['AWS', 'Scaleway', 'Vultr', 'Proxmox VE', 'EC2', 'RDS', 'S3', 'IAM', 'Route 53', 'CloudFront', 'VPC'] },
-      { icon: 'code', title: 'Infrastructure as Code', items: ['Terraform', 'Ansible', 'Bash', 'Python', 'Provisionnement', 'Gestion de configuration'] },
-      { icon: 'container', title: 'Conteneurs & Orchestration', items: ['Docker', 'Docker Compose', 'Kubernetes', 'Amazon EKS', 'ArgoCD', 'Registres de conteneurs'] },
-      { icon: 'pipeline', title: 'CI/CD & GitOps', items: ['GitLab CI/CD', 'GitHub Actions', 'Jenkins', 'GitLab Runner', 'GitOps', 'Blue/Green'] },
-      { icon: 'activity', title: 'Supervision & Observabilité', items: ['Prometheus', 'Grafana', 'ELK Stack', 'Uptime Kuma', 'Beszel', 'Wazuh', 'Logs centralisés', 'Alertes'] },
-      { icon: 'shield', title: 'DevSecOps & Sécurité', items: ['Cloudflare WAF', 'Gitleaks', 'Vault', 'AWS Secrets Manager', 'Teleport', 'WireGuard', 'Scan de vulnérabilités', 'Durcissement Linux et TLS', 'IAM et RBAC'] },
-      { icon: 'server', title: 'Réseau & Systèmes', items: ['Linux', 'Ubuntu', 'Nginx', 'Apache', 'Traefik', 'Caddy', 'PostgreSQL', 'Redis', 'RabbitMQ', 'VPN', 'DNS', 'Pare-feu'] },
+      {
+        id: 'cloud-infrastructure',
+        icon: 'cloud',
+        title: 'Cloud & Infrastructure',
+        summary: 'Conception et exploitation d’infrastructures sur le cloud public et en virtualisation, adaptées aux contraintes techniques et budgétaires.',
+        items: ['AWS', 'Scaleway', 'Vultr', 'Proxmox VE', 'EC2', 'RDS', 'S3', 'IAM', 'Route 53', 'CloudFront', 'VPC'],
+      },
+      {
+        id: 'infrastructure-as-code',
+        icon: 'code',
+        title: 'Infrastructure as Code',
+        summary: 'Infrastructure et configuration décrites en code, versionnées, relues et reproductibles.',
+        items: ['Terraform', 'Ansible', 'Bash', 'Python', 'Provisionnement', 'Gestion de configuration'],
+      },
+      {
+        id: 'conteneurs-orchestration',
+        icon: 'container',
+        title: 'Conteneurs & Orchestration',
+        summary: 'Empaquetage, déploiement et orchestration d’applications conteneurisées.',
+        items: ['Docker', 'Docker Compose', 'Kubernetes', 'Amazon EKS', 'ArgoCD', 'Registres de conteneurs'],
+      },
+      {
+        id: 'ci-cd-gitops',
+        icon: 'pipeline',
+        title: 'CI/CD & GitOps',
+        summary: 'Chaînes de livraison automatisées, du commit jusqu’à la production.',
+        items: ['GitLab CI/CD', 'GitHub Actions', 'Jenkins', 'GitLab Runner', 'GitOps', 'Blue/Green'],
+      },
+      {
+        id: 'supervision-observabilite',
+        icon: 'activity',
+        title: 'Supervision & Observabilité',
+        summary: 'Métriques, logs et alertes qui rendent visible le comportement de la production.',
+        items: ['Prometheus', 'Grafana', 'ELK Stack', 'Uptime Kuma', 'Beszel', 'Wazuh', 'Logs centralisés', 'Alertes'],
+      },
+      {
+        id: 'devsecops-securite',
+        icon: 'shield',
+        title: 'DevSecOps & Sécurité',
+        summary: 'Sécurité intégrée aux pipelines, aux accès et aux serveurs.',
+        items: ['Cloudflare WAF', 'Gitleaks', 'Vault', 'AWS Secrets Manager', 'Teleport', 'WireGuard', 'Scan de vulnérabilités', 'Durcissement Linux et TLS', 'IAM et RBAC'],
+      },
+      {
+        id: 'reseau-systemes',
+        icon: 'server',
+        title: 'Réseau & Systèmes',
+        summary: 'Les fondations Linux, réseau et middleware sur lesquelles reposent les plateformes.',
+        items: ['Linux', 'Ubuntu', 'Nginx', 'Apache', 'Traefik', 'Caddy', 'PostgreSQL', 'Redis', 'RabbitMQ', 'VPN', 'DNS', 'Pare-feu'],
+      },
     ],
   },
 
@@ -188,6 +237,7 @@ const fr = {
     items: [
       {
         id: 'infrastructure-aws-terraform',
+        domains: ['cloud-infrastructure', 'infrastructure-as-code', 'conteneurs-orchestration', 'ci-cd-gitops'],
         featured: true,
         icon: 'cloud',
         title: 'Infrastructure AWS en code',
@@ -223,6 +273,7 @@ const fr = {
       },
       {
         id: 'production-conteneurs',
+        domains: ['conteneurs-orchestration', 'reseau-systemes', 'cloud-infrastructure'],
         featured: true,
         icon: 'container',
         title: 'Infrastructure de production et conteneurs',
@@ -251,6 +302,7 @@ const fr = {
       },
       {
         id: 'pipeline-devsecops',
+        domains: ['devsecops-securite', 'ci-cd-gitops'],
         featured: true,
         icon: 'shield',
         title: 'Pipeline DevSecOps',
@@ -277,6 +329,7 @@ const fr = {
       },
       {
         id: 'supervision-observabilite',
+        domains: ['supervision-observabilite'],
         icon: 'activity',
         title: 'Supervision et observabilité',
         status: 'production',
@@ -298,6 +351,7 @@ const fr = {
       },
       {
         id: 'acces-securise-reseau',
+        domains: ['devsecops-securite', 'reseau-systemes'],
         icon: 'lock',
         title: 'Accès sécurisé et architecture réseau',
         status: 'production',
@@ -324,6 +378,7 @@ const fr = {
       },
       {
         id: 'virtualisation-haute-disponibilite',
+        domains: ['cloud-infrastructure', 'reseau-systemes'],
         icon: 'layers',
         title: 'Virtualisation et haute disponibilité',
         status: 'production',

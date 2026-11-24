@@ -53,3 +53,6 @@ export const icon = (name, cls = 'icon') =>
 
 /** URL d'une page projet. */
 export const projectUrl = (item) => `/projets/${item.id}/`;
+
+/** URL d'une page domaine de compétence. */
+export const domainUrl = (domain) => `/competences/${domain.id}/`;
