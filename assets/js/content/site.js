@@ -30,7 +30,7 @@ const site = {
   ],
 
   contact: {
-    email: null,          // ex. 'contact@votre-domaine.com'
+    email: 'andriharisoaniaina@gmail.com',
     github: null,         // ex. 'https://github.com/<utilisateur>'
     linkedin: null,       // ex. 'https://www.linkedin.com/in/<profil>'
     cv: null,             // ex. 'assets/files/cv-niaina-andriharisoa.pdf'
